@@ -7,9 +7,23 @@ node {
         }
 
         stage('Build') {
+           
+            
+            jdk = tool name: 'JAVA_HOME'
+  env.JAVA_HOME = "${jdk}"
+
+  echo "jdk installation path is: ${jdk}"
+
+    def mvnHome = tool 'maven'
+  // next 2 are equivalents
+  sh "${jdk}/bin/java -version"
+
+  // note that simple quote strings are not evaluated by Groovy
+  // substitution is done by shell script using environment
+  sh '$JAVA_HOME/bin/java -version'
+            
             sh 'mvn clean install'
-             def mvnHome = tool 'maven'
-             env.JAVA_HOME = tool 'JAVA_HOME'
+             
             def pom = readMavenPom file:'pom.xml'
             print pom.version
             env.version = pom.version
