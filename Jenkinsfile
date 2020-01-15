@@ -8,7 +8,8 @@ node {
 
         stage('Build') {
             sh 'mvn clean install'
-
+             def mvnHome = tool 'maven'
+             env.JAVA_HOME = tool 'JAVA_HOME'
             def pom = readMavenPom file:'pom.xml'
             print pom.version
             env.version = pom.version
